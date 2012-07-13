@@ -106,8 +106,9 @@
     }
     stack[stack_length++] = arg;
     var indent = repeatString(console._indent, stack_length);
+    var keys;
     if (Object.getOwnPropertyNames) {
-      var keys = Object.getOwnPropertyNames(arg);
+      keys = Object.getOwnPropertyNames(arg);
     } else {
       keys = [];
       for (var key in arg) {
@@ -121,10 +122,10 @@
     keys = keys.sort();
     var arr_obj = [];
     for (var n=0, nn=keys.length; n<nn; n++) {
-      key = keys[n];
+      var a_key = keys[n];
       try {
-        var value = source_of(arg[key], limit-1, stack);
-        arr_obj.push("\n"+ indent + key +': '+ value);
+        var value = source_of(arg[a_key], limit-1, stack);
+        arr_obj.push("\n"+ indent + a_key +': '+ value);
       } catch (e) {}
     }
     return result + arr_obj.join(', ') +'\n'+ repeatString(console._indent, stack_length - 1) + '}';
@@ -213,8 +214,9 @@
           if (within) {
             return prefix + '{?}';
           }
+          var keys;
           if (Object.getOwnPropertyNames) {
-            var keys = Object.getOwnPropertyNames(arg);
+            keys = Object.getOwnPropertyNames(arg);
           } else {
             keys = [];
             for (var key in arg) {
@@ -230,10 +232,10 @@
           keys = keys.sort();
           var properties = [];
           for (var n=0, nn=keys.length; n<nn; n++) {
-            key = keys[n];
+            var a_key = keys[n];
             try {
-              var value = inspect(arg[key], true);
-              properties.push(key +': '+ value);
+              var value = inspect(arg[a_key], true);
+              properties.push(a_key +': '+ value);
             } catch (e) {}
           }
           return result + properties.join(', ') +'}';
@@ -348,7 +350,7 @@
    * @param {String} name such as "my damn slow parser"
    */
   console.time = console.time || function time (name) {
-    var start = (new Date).getTime();
+    var start = (new Date()).getTime();
     console._timers[name] = {'start': start};
   };
 
@@ -356,7 +358,7 @@
    * @param {String} name such as "my damn slow parser"
    */
   console.timeEnd = console.timeEnd || function timeEnd (name) {
-    var end = (new Date).getTime();
+    var end = (new Date()).getTime();
     console.info(name +': '+ (end - console._timers[name].start) +'ms');
     console._timers[name].end = end;
   };
