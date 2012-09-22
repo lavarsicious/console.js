@@ -268,7 +268,11 @@
         for (var i=0; i<args.length; i++) {
           result.push(console._inspect(args[i]));
         }
-        return (_log || console._output)(result.join(console._args_separator));
+        var logFunc = _log || console._output;
+        if(logFunc.call) { // IE10
+            return logFunc.call(this, result.join(console._args_separator));
+        }
+        return logFunc(result.join(console._args_separator));
       };
     }
   }
